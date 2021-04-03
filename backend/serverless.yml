@@ -11,13 +11,15 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-central-1'}
+  account: 764533981594
 
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
     USER_ID_CREATED_AT_INDEX: UserIdCreatedAtIndex
+    TODO_IMAGES_S3_BUCKET: serverless-todo-images-${self:provider.account}-${self:provider.stage}
 
   iamRoleStatements:
-    # TODO: move this to the function in question
+    # TODO: move these to the functions in question
     - Effect: Allow
       Action:
         - dynamodb:PutItem
@@ -26,7 +28,11 @@ provider:
         - dynamodb:GetItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
-
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject # do I really need this?
+      Resource: arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*
 functions:
 
   Auth:
@@ -100,3 +106,36 @@ resources:
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL
+
+    TodoImagesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.TODO_IMAGES_S3_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
+
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        PolicyDocument:
+          Id: MyPolicy
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: 's3:GetObject'
+              Resource: 'arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*'
+        Bucket: !Ref TodoImagesBucket
