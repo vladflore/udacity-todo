@@ -10,3 +10,7 @@ sls package
 sls deploy -v
 sls remove
 
+curl https://dusblkus56.execute-api.eu-central-1.amazonaws.com/dev/todos | jq
+curl https://dusblkus56.execute-api.eu-central-1.amazonaws.com/dev/todos -d'{"name":"finish udacity 1","dueDate":"2021-04-03T18:05:26.340Z"}' -w '\n' | jq
+curl -X PATCH https://dusblkus56.execute-api.eu-central-1.amazonaws.com/dev/todos/04414beb-1948-4be0-9e7a-5282f1658545 \
+-d'{"name":"finish it!","dueDate":"2021-04-03T18:05:26.340Z","done":"true"}'
