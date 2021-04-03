@@ -21,6 +21,7 @@ provider:
     - Effect: Allow
       Action:
         - dynamodb:PutItem
+        - dynamodb:Scan
       Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 functions:
@@ -44,7 +45,6 @@ functions:
           method: post
           path: todos
           cors: true
-
 
   # TODO: Configure this function
   UpdateTodo:
