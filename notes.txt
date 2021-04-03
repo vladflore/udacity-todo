@@ -1,0 +1,12 @@
+npm install
+
+vlad@vlad-GL552VW:$ sls --version
+Framework Core: 2.25.2
+Plugin: 4.4.3
+SDK: 2.3.2
+Components: 3.7.0
+
+sls package
+
+fix/ignore compilation errors
+
