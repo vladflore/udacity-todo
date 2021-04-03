@@ -7,6 +7,6 @@ SDK: 2.3.2
 Components: 3.7.0
 
 sls package
-
-fix/ignore compilation errors
+sls deploy -v
+sls remove
 
