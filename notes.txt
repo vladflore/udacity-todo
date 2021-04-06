@@ -1,6 +1,6 @@
 npm install
 
-vlad@vlad-GL552VW:$ sls --version
+sls --version
 Framework Core: 2.25.2
 Plugin: 4.4.3
 SDK: 2.3.2
@@ -10,29 +10,37 @@ sls package
 sls deploy -v
 sls remove
 
-vlad@vlad-GL552VW:$ curl https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos | jq
-{
-  "items": [
-    {
-      "todoId": "565a5348-81e2-44d7-81e0-da2e295e09fc",
-      "attachmentUrl": "https://serverless-todo-images-764533981594-dev.s3.amazonaws.com/565a5348-81e2-44d7-81e0-da2e295e09fc",
-      "userId": "2eaab214-16ce-4112-8417-342cec37ce85",
-      "dueDate": "2021-04-03T18:05:26.340Z",
-      "createdAt": "2021-04-03T22:43:23.463Z",
-      "name": "finish udacity 1",
-      "done": false
-    }
-  ]
-}
-
-
 curl https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos -d'{"name":"finish udacity 1","dueDate":"2021-04-03T18:05:26.340Z"}' -w '\n' | jq
-
 curl -X PATCH https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos/565a5348-81e2-44d7-81e0-da2e295e09fc \
 -d'{"name":"finish it by deleting it!","dueDate":"2021-04-03T18:05:26.340Z","done":"true"}'
-
 curl -X DELETE https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos/565a5348-81e2-44d7-81e0-da2e295e09fc
-
 curl -X POST https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos/565a5348-81e2-44d7-81e0-da2e295e09fc/attachment
 
 the signed url request is a PUT operation
+
+create an Auth0 SPA:
+- callback url: http://localhost:3000/callback
+- allowed web origins: http://localhost:3000
+
+const apiId = '...' API Gateway id
+export const apiEndpoint = `https://${apiId}.execute-api.eu-central-1.amazonaws.com/dev`
+
+export const authConfig = {
+  domain: 'udacity-serverless-udagram.eu.auth0.com',
+  clientId: 'ov36eWfUNmkGdiUEcUqv7ZrZR82Dg4gC',
+  callbackUrl: 'http://localhost:3000/callback'
+}
+
+things to implement:
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+[X] create Auth0 SAP
+[ ] implement authentication
+[X] use query() instead of scan()
+[ ] validate incoming HTTP requests(define request schemas in function definitions)
+[ ] enable distributed tracing
+[ ] add logs
+[ ] metrics?
+[ ] define permissions per function
+[ ] separate business logic from lower level code(database, file storage etc.)
+[ ] update auth config and API config in config.ts
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
