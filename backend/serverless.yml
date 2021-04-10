@@ -54,6 +54,7 @@ functions:
           method: get
           path: todos
 #          authorizer: Auth
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -71,6 +72,7 @@ functions:
           method: post
           path: todos
 #          authorizer: Auth
+          cors: true
           reqValidatorName: RequestBodyValidator
           documentation:
             summary: Create a new todo
@@ -90,6 +92,7 @@ functions:
           method: patch
           path: todos/{todoId}
 #          authorizer: Auth
+          cors: true
           reqValidatorName: RequestBodyValidator
           documentation:
             summary: Update an existing todo
@@ -110,6 +113,7 @@ functions:
           method: delete
           path: todos/{todoId}
 #          authorizer: Auth
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -123,6 +127,7 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
