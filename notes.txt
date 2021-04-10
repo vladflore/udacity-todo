@@ -10,12 +10,6 @@ sls package
 sls deploy -v
 sls remove
 
-curl https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos -d'{"name":"finish udacity 1","dueDate":"2021-04-03T18:05:26.340Z"}' -w '\n' | jq
-curl -X PATCH https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos/565a5348-81e2-44d7-81e0-da2e295e09fc \
--d'{"name":"finish it by deleting it!","dueDate":"2021-04-03T18:05:26.340Z","done":"true"}'
-curl -X DELETE https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos/565a5348-81e2-44d7-81e0-da2e295e09fc
-curl -X POST https://2zqso2wqq1.execute-api.eu-central-1.amazonaws.com/dev/todos/565a5348-81e2-44d7-81e0-da2e295e09fc/attachment
-
 the signed url request is a PUT operation
 
 create an Auth0 SPA:
@@ -31,16 +25,19 @@ export const authConfig = {
   callbackUrl: 'http://localhost:3000/callback'
 }
 
+token:
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Il95U21CVFhnNi1TSHhEc1V0eFFTUCJ9.eyJpc3MiOiJodHRwczovL3VkYWNpdHktc2VydmVybGVzcy11ZGFncmFtLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDEwNjU2Njg5OTI2NDgyODAzNDMwMSIsImF1ZCI6InJOajNpZmJjaVVzQmc1R3VKYmM4TjVubmlramFtazRyIiwiaWF0IjoxNjE4MDczODE4LCJleHAiOjE2MTgxNjAyMTgsImF0X2hhc2giOiJmaE5QTFNQZ2tsYjY4ZzRYMDNtU3RnIiwibm9uY2UiOiJQRDZyblRTaUNYQ3ZxRUF2ZVVveDlnUE9QWWxkQnkzMCJ9.OqH5rpoR2_tM4dacsQVDYZQ0nyx0ORlm4cu_4PcGL1LghygahqPQPXNfS5ISb7Bd3nI-ZbdcYPlm_RyCYySOnHtkJya2O4bQFUx-cY_IOALPcF835s_X05Bkh3N-jJ3gUZgFSXk7DASlP07sYWjaOLXn_W6KyOJW8YuHX52TFVJRfMdXmmiAXNzdlHVR_0kgf-N5pGymtjHW9I9t9VHBp8VgPjRMRBatGfuGlL5dpNFkWuBo6y22bOoaW45RRhxxIAEW5KpuARVd-3aFEv31VWuiX1Wb9Z-HMnJUX4Unfcu6E7FTVOA032-jjwvMfMullA5Ka8wAFgq5WDs8Q793SQ
+
 things to implement:
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [X] create Auth0 SAP
-[ ] implement authentication
 [X] use query() instead of scan()
+[X] define permissions per function
+[ ] separate business logic from lower level code(database, file storage etc.)
 [ ] validate incoming HTTP requests(define request schemas in function definitions)
+[ ] implement authentication
+[ ] update auth config and API config in config.ts
 [ ] enable distributed tracing
 [ ] add logs
 [ ] metrics?
-[ ] define permissions per function
-[ ] separate business logic from lower level code(database, file storage etc.)
-[ ] update auth config and API config in config.ts
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
