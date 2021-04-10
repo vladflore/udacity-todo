@@ -2,17 +2,16 @@ import 'source-map-support/register'
 
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
 import {getUserId} from "../utils";
-import {TodosManager} from "../../data_layer/todosManager";
-import {TodoItem} from "../../models/TodoItem";
+import {TodosService} from "../../todosService";
 
-const todosManager = new TodosManager()
+const todosService = new TodosService()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
+    const userId = getUserId(event);
 
-    const todo: TodoItem = await todosManager.getTodo(todoId, getUserId(event))
-
-    if (!todo) {
+    const deletedTodo = await todosService.delete(todoId, userId);
+    if (!deletedTodo) {
         return {
             statusCode: 404,
             headers: {
@@ -24,14 +23,12 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         }
     }
 
-    await todosManager.deleteTodo(todoId, getUserId(event))
-
     return {
         statusCode: 200,
         headers: {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({})
-    }
+    };
 
 }

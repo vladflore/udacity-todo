@@ -2,17 +2,16 @@ import 'source-map-support/register'
 
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
 import {getUserId} from "../utils";
-import {TodoItem} from "../../models/TodoItem";
-import {TodosManager} from "../../data_layer/todosManager";
+import {TodosService} from "../../todosService";
 
-const todosManager = new TodosManager()
+const todosService = new TodosService()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
     const userId = getUserId(event);
 
-    const todo: TodoItem = await todosManager.getTodo(todoId, userId)
-    if (!todo) {
+    const uploadUrl: string = await todosService.createAttachment(todoId, userId);
+    if (!uploadUrl) {
         return {
             statusCode: 404,
             headers: {
@@ -23,9 +22,6 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
             })
         }
     }
-
-    await todosManager.updateTodoAttachment(todoId, userId)
-    const uploadUrl = todosManager.getUploadUrl(todoId)
 
     return {
         statusCode: 201,

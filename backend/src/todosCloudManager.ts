@@ -1,10 +1,10 @@
 import {DocumentClient} from "aws-sdk/clients/dynamodb";
 import * as AWS from "aws-sdk";
-import {TodoItem} from "../models/TodoItem";
-import {UpdateTodoRequest} from "../requests/UpdateTodoRequest";
+import {TodoItem} from "./models/TodoItem";
+import {UpdateTodoRequest} from "./requests/UpdateTodoRequest";
 import {S3} from "aws-sdk/clients/browser_default";
 
-export class TodosManager {
+export class TodosCloudManager {
     constructor(
         private readonly dynamodb: DocumentClient = new AWS.DynamoDB.DocumentClient(),
         private readonly s3: S3 = new AWS.S3({signatureVersion: 'v4'}),
@@ -14,13 +14,11 @@ export class TodosManager {
     ) {
     }
 
-    async createTodo(todo: TodoItem) {
+    async saveTodo(todo: TodoItem) {
         await this.dynamodb.put({
             TableName: this.todosTable,
             Item: todo
         }).promise()
-
-        return todo
     }
 
     async updateTodo(todoId: string, userId: string, updateTodoData: UpdateTodoRequest) {
@@ -42,7 +40,7 @@ export class TodosManager {
         }).promise()
     }
 
-    async updateTodoAttachment(todoId: string, userId: string) {
+    async addTodoAttachment(todoId: string, userId: string) {
         await this.dynamodb.update({
             TableName: this.todosTable,
             Key: {
@@ -66,7 +64,7 @@ export class TodosManager {
         }).promise()
     }
 
-    async getTodo(todoId: string, userId: string): Promise<TodoItem> | undefined {
+    async findTodo(todoId: string, userId: string): Promise<TodoItem> | undefined {
         const result = await this.dynamodb.get({
             TableName: this.todosTable,
             Key: {
@@ -97,7 +95,7 @@ export class TodosManager {
         return result.Items
     }
 
-    getUploadUrl(todoId: string) {
+    getUploadUrlForTodo(todoId: string) {
         return this.s3.getSignedUrl('putObject', {
             Bucket: this.attachmentsBucket,
             Key: todoId,

@@ -1,35 +1,22 @@
 import 'source-map-support/register'
-import * as uuid from 'uuid'
 
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
-import {CreateTodoRequest} from '../../requests/CreateTodoRequest'
-import {TodoItem} from '../../models/TodoItem'
+import {TodosService} from "../../todosService";
+import {CreateTodoRequest} from "../../requests/CreateTodoRequest";
 import {getUserId} from "../utils";
-import {TodosManager} from "../../data_layer/todosManager";
 
-const todosManager = new TodosManager()
+const todosService = new TodosService()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const newTodo: CreateTodoRequest = JSON.parse(event.body)
-
-    const newTodoItem: TodoItem = {
-        userId: getUserId(event),
-        todoId: uuid.v4(),
-        createdAt: new Date().toISOString(),
-        ...newTodo,
-        done: false
-    }
-
-    const savedTodo: TodoItem = await todosManager.createTodo(newTodoItem)
-    delete savedTodo['userId']
-
+    const newTodoData: CreateTodoRequest = JSON.parse(event.body)
+    const userId: string = getUserId(event)
     return {
         statusCode: 201,
         headers: {
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            item: savedTodo
+            item: await todosService.createNew(newTodoData, userId)
         })
     }
 }
