@@ -1,23 +1,18 @@
 import 'source-map-support/register'
 
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
-import * as AWS from 'aws-sdk'
 import {getUserId} from "../utils";
+import {TodosManager} from "../../data_layer/todosManager";
+import {TodoItem} from "../../models/TodoItem";
 
-const dynamodb = new AWS.DynamoDB.DocumentClient()
+const todosManager = new TodosManager()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
 
-    const result = await dynamodb.get({
-        TableName: process.env.TODOS_TABLE,
-        Key: {
-            userId: getUserId(event),
-            todoId: todoId
-        }
-    }).promise()
+    const todo: TodoItem = await todosManager.getTodo(todoId, getUserId(event))
 
-    if (!result.Item) {
+    if (!todo) {
         return {
             statusCode: 404,
             headers: {
@@ -29,15 +24,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         }
     }
 
-    console.log(`Deleting todo with id: ${todoId}`)
-
-    await dynamodb.delete({
-        TableName: process.env.TODOS_TABLE,
-        Key: {
-            userId: getUserId(event),
-            todoId: todoId
-        }
-    }).promise()
+    await todosManager.deleteTodo(todoId, getUserId(event))
 
     return {
         statusCode: 200,

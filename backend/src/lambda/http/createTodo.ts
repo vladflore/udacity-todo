@@ -1,13 +1,13 @@
 import 'source-map-support/register'
 import * as uuid from 'uuid'
-import * as AWS from 'aws-sdk'
 
 import {APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult} from 'aws-lambda'
 import {CreateTodoRequest} from '../../requests/CreateTodoRequest'
 import {TodoItem} from '../../models/TodoItem'
 import {getUserId} from "../utils";
+import {TodosManager} from "../../data_layer/todosManager";
 
-const dynamodb = new AWS.DynamoDB.DocumentClient()
+const todosManager = new TodosManager()
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const newTodo: CreateTodoRequest = JSON.parse(event.body)
@@ -20,12 +20,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
         done: false
     }
 
-    await dynamodb.put({
-        TableName: process.env.TODOS_TABLE,
-        Item: newTodoItem
-    }).promise()
-
-    delete newTodoItem['userId']
+    const savedTodo: TodoItem = await todosManager.createTodo(newTodoItem)
+    delete savedTodo['userId']
 
     return {
         statusCode: 201,
@@ -33,7 +29,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
             'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-            item: newTodoItem
+            item: savedTodo
         })
     }
 }
