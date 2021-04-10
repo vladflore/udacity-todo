@@ -4,10 +4,13 @@ import {TodoItem} from "./models/TodoItem";
 import {UpdateTodoRequest} from "./requests/UpdateTodoRequest";
 import {S3} from "aws-sdk/clients/browser_default";
 
+const AWSXRay = require('aws-xray-sdk')
+const XAWS = AWSXRay.captureAWS(AWS)
+
 export class TodosCloudManager {
     constructor(
-        private readonly dynamodb: DocumentClient = new AWS.DynamoDB.DocumentClient(),
-        private readonly s3: S3 = new AWS.S3({signatureVersion: 'v4'}),
+        private readonly dynamodb: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
+        private readonly s3: S3 = new XAWS.S3({signatureVersion: 'v4'}),
         private readonly todosTable: string = process.env.TODOS_TABLE,
         private readonly index: string = process.env.USER_ID_CREATED_AT_INDEX,
         private readonly attachmentsBucket: string = process.env.TODO_IMAGES_S3_BUCKET

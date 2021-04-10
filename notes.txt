@@ -33,11 +33,11 @@ things to implement:
 [X] create Auth0 SAP
 [X] use query() instead of scan()
 [X] define permissions per function
-[ ] separate business logic from lower level code(database, file storage etc.)
+[X] separate business logic from lower level code(database, file storage etc.)
 [ ] validate incoming HTTP requests(define request schemas in function definitions)
 [ ] implement authentication
 [ ] update auth config and API config in config.ts
-[ ] enable distributed tracing
+[X] enable distributed tracing
 [ ] add logs
 [ ] metrics?
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
