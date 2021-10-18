@@ -20,7 +20,7 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-central-1'}
-  account: 764533981594
+  account: 876765129958
 
   environment:
     TODOS_TABLE: Todos-${self:provider.stage}
@@ -44,8 +44,10 @@ custom:
 
 functions:
 
-  Auth:
-    handler: src/lambda/auth/auth0Authorizer.handler
+#  Auth:
+#    handler: src/lambda/auth/auth0Authorizer.handler
+  RS256Auth:
+    handler: src/lambda/auth/rs256Auth0Authorizer.handler
 
   GetTodos:
     handler: src/lambda/http/getTodos.handler
@@ -53,7 +55,7 @@ functions:
       - http:
           method: get
           path: todos
-#          authorizer: Auth
+          authorizer: RS256Auth
           cors: true
     iamRoleStatements:
       - Effect: Allow
@@ -71,7 +73,7 @@ functions:
       - http:
           method: post
           path: todos
-#          authorizer: Auth
+          authorizer: RS256Auth
           cors: true
           reqValidatorName: RequestBodyValidator
           documentation:

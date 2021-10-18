@@ -16,7 +16,7 @@ the signed url request is a PUT operation
 things to implement:
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 [ ] implement authentication
-[ ] update auth config and API config in config.ts
+[X] update auth config and API config in config.ts
 [X] create Auth0 SAP
 [X] use query() instead of scan()
 [X] define permissions per function

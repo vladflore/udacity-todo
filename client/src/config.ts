@@ -1,9 +1,9 @@
-const apiId = 'wyckueodz4'
+const apiId = 'l4z73gfpf0'
 const region = 'eu-central-1'
 export const apiEndpoint = `https://${apiId}.execute-api.${region}.amazonaws.com/dev`
 
 export const authConfig = {
-  domain: 'udacity-serverless-udagram.eu.auth0.com',
-  clientId: 'ov36eWfUNmkGdiUEcUqv7ZrZR82Dg4gC',
+  domain: 'dev-t30egl7m.us.auth0.com',
+  clientId: 'oA7SHkdMousHGn0HRIHN1uRXuq1LHxXh',
   callbackUrl: 'http://localhost:3000/callback'
 }
