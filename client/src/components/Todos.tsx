@@ -2,17 +2,7 @@ import dateFormat from 'dateformat'
 import { History } from 'history'
 import update from 'immutability-helper'
 import * as React from 'react'
-import {
-  Button,
-  Checkbox,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-  Input,
-  Image,
-  Loader
-} from 'semantic-ui-react'
+import { Button, Checkbox, Divider, Grid, Header, Icon, Image, Input, Loader } from 'semantic-ui-react'
 
 import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
 import Auth from '../auth/Auth'
@@ -97,6 +87,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         loadingTodos: false
       })
     } catch (e) {
+      // @ts-ignore
       alert(`Failed to fetch todos: ${e.message}`)
     }
   }
@@ -104,7 +95,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   render() {
     return (
       <div>
-        <Header as="h1">TODOs</Header>
+        <Header as='h1'>TODOs</Header>
 
         {this.renderCreateTodoInput()}
 
@@ -126,8 +117,8 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
               onClick: this.onTodoCreate
             }}
             fluid
-            actionPosition="left"
-            placeholder="To change the world..."
+            actionPosition='left'
+            placeholder='To change the world...'
             onChange={this.handleNameChange}
           />
         </Grid.Column>
@@ -149,7 +140,7 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
   renderLoading() {
     return (
       <Grid.Row>
-        <Loader indeterminate active inline="centered">
+        <Loader indeterminate active inline='centered'>
           Loading TODOs
         </Loader>
       </Grid.Row>
@@ -162,38 +153,38 @@ export class Todos extends React.PureComponent<TodosProps, TodosState> {
         {this.state.todos.map((todo, pos) => {
           return (
             <Grid.Row key={todo.todoId}>
-              <Grid.Column width={1} verticalAlign="middle">
+              <Grid.Column width={1} verticalAlign='middle'>
                 <Checkbox
                   onChange={() => this.onTodoCheck(pos)}
                   checked={todo.done}
                 />
               </Grid.Column>
-              <Grid.Column width={10} verticalAlign="middle">
+              <Grid.Column width={10} verticalAlign='middle'>
                 {todo.name}
               </Grid.Column>
-              <Grid.Column width={3} floated="right">
+              <Grid.Column width={3} floated='right'>
                 {todo.dueDate}
               </Grid.Column>
-              <Grid.Column width={1} floated="right">
+              <Grid.Column width={1} floated='right'>
                 <Button
                   icon
-                  color="blue"
+                  color='blue'
                   onClick={() => this.onEditButtonClick(todo.todoId)}
                 >
-                  <Icon name="pencil" />
+                  <Icon name='pencil' />
                 </Button>
               </Grid.Column>
-              <Grid.Column width={1} floated="right">
+              <Grid.Column width={1} floated='right'>
                 <Button
                   icon
-                  color="red"
+                  color='red'
                   onClick={() => this.onTodoDelete(todo.todoId)}
                 >
-                  <Icon name="delete" />
+                  <Icon name='delete' />
                 </Button>
               </Grid.Column>
               {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+                <Image src={todo.attachmentUrl} size='small' wrapped />
               )}
               <Grid.Column width={16}>
                 <Divider />

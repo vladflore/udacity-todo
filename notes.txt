@@ -15,7 +15,7 @@ the signed url request is a PUT operation
 
 things to implement:
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-[ ] implement authentication
+[X] implement authentication
 [X] update auth config and API config in config.ts
 [X] create Auth0 SAP
 [X] use query() instead of scan()
@@ -24,7 +24,7 @@ things to implement:
 [X] validate incoming HTTP requests(define request schemas in function definitions)
 [X] enable distributed tracing
 [X] add logs
-[?] metrics
+[ ] metrics
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 https://manage.auth0.com/dashboard/us/dev-t30egl7m/applications

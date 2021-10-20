@@ -1,6 +1,5 @@
-org: vladflore
-app: serverless-todo-app
-service: serverless-todo-app
+service:
+  name: serverless-todo-app
 
 plugins:
   - serverless-webpack
@@ -47,10 +46,10 @@ custom:
 
 functions:
 
-  #  Auth:
-  #    handler: src/lambda/auth/auth0Authorizer.handler
-  RS256Auth:
-    handler: src/lambda/auth/rs256Auth0Authorizer.handler
+  Auth:
+    handler: src/lambda/auth/auth0Authorizer.handler
+#  RS256Auth:
+#    handler: src/lambda/auth/rs256Auth0Authorizer.handler
 
   GetTodos:
     handler: src/lambda/http/getTodos.handler
@@ -58,7 +57,7 @@ functions:
       - http:
           method: get
           path: todos
-          authorizer: RS256Auth
+          authorizer: Auth
           cors: true
     iamRoleStatements:
       - Effect: Allow
@@ -76,7 +75,7 @@ functions:
       - http:
           method: post
           path: todos
-          authorizer: RS256Auth
+          authorizer: Auth
           cors: true
           reqValidatorName: RequestBodyValidator
           documentation:
@@ -96,7 +95,7 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
-          #          authorizer: Auth
+#          authorizer: Auth
           cors: true
           reqValidatorName: RequestBodyValidator
           documentation:
@@ -117,7 +116,7 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
-          #          authorizer: Auth
+#          authorizer: Auth
           cors: true
     iamRoleStatements:
       - Effect: Allow
@@ -179,7 +178,8 @@ resources:
         BucketName: ${self:provider.environment.TODO_IMAGES_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
-            - AllowedOrigins:
+            -
+              AllowedOrigins:
                 - '*'
               AllowedHeaders:
                 - '*'
