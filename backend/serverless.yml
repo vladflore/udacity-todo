@@ -1,11 +1,13 @@
-service:
-  name: serverless-todo-app
+org: vladflore
+app: serverless-todo-app
+service: serverless-todo-app
 
 plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-reqvalidator-plugin
   - serverless-aws-documentation
+  - serverless-plugin-tracing
 
 package:
   individually: true
@@ -13,6 +15,7 @@ package:
 provider:
   name: aws
   runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
 
   tracing:
     lambda: true
@@ -44,8 +47,8 @@ custom:
 
 functions:
 
-#  Auth:
-#    handler: src/lambda/auth/auth0Authorizer.handler
+  #  Auth:
+  #    handler: src/lambda/auth/auth0Authorizer.handler
   RS256Auth:
     handler: src/lambda/auth/rs256Auth0Authorizer.handler
 
@@ -93,7 +96,7 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
-#          authorizer: Auth
+          #          authorizer: Auth
           cors: true
           reqValidatorName: RequestBodyValidator
           documentation:
@@ -114,7 +117,7 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
-#          authorizer: Auth
+          #          authorizer: Auth
           cors: true
     iamRoleStatements:
       - Effect: Allow
@@ -176,8 +179,7 @@ resources:
         BucketName: ${self:provider.environment.TODO_IMAGES_S3_BUCKET}
         CorsConfiguration:
           CorsRules:
-            -
-              AllowedOrigins:
+            - AllowedOrigins:
                 - '*'
               AllowedHeaders:
                 - '*'

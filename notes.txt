@@ -26,3 +26,5 @@ things to implement:
 [X] add logs
 [?] metrics
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+https://manage.auth0.com/dashboard/us/dev-t30egl7m/applications
