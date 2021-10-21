@@ -28,3 +28,7 @@ things to implement:
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 https://manage.auth0.com/dashboard/us/dev-t30egl7m/applications
+
+export NODE_OPTIONS="--max-old-space-size=8192"
+
+https://d7rpw3f31m.execute-api.eu-central-1.amazonaws.com/dev
